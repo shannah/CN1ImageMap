@@ -20,22 +20,8 @@ If you haven’t activated any cn1libs before in your Codename One projects, see
 [source,java]
 ----
 private ImageMapContainer createImageMap(NavigateWindowTemplate tpl) {
-	int w = tpl.size.getWidth();
-	int h = tpl.size.getHeight();
-	if (!CN.isDesktop()) {
-		if (CN.isPortrait()) {
-			double availableWidth = cnt.getWidth() - cnt.getStyle().getHorizontalPadding();
-			double factor = (availableWidth)/w;
-			h = (int)Math.round(factor * h);
-			w = (int)Math.round(availableWidth);
-		} else {
-			double availableHeight = cnt.getHeight() - cnt.getStyle().getVerticalPadding();
-			double factor = (availableHeight)/h;
-			w = (int)Math.round(factor * w);
-			h = (int)Math.round(availableHeight);
-		}
-	}
-	ImageMapContainer out = new ImageMapContainer(tpl.img, w, h);
+
+	ImageMapContainer out = new ImageMapContainer(tpl.img, tpl.img.getWidth(), tpl.img.getHeight());
 	for (NavigateWindowLink link : tpl.links) {
 		ImageMapContainer.ClickableAreaType type = ImageMapContainer.ClickableAreaType.Rect;
 		if ("oval".equals(link.shape)) {
