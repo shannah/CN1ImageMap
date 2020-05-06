@@ -1,0 +1,66 @@
+= CN1ImageMap
+
+An image map component for https://www.codenameone.com[Codename One]
+
+This library includes a component for displaying images with clickable hot zones, with the effect being similar to HTML image maps.  The component can be resized, and the image and clickable areas are resized and positioned accordingly.
+
+== License
+
+Apache 2.0
+
+== Installation
+
+Install through Codename One settings.  
+
+If you haven’t activated any cn1libs before in your Codename One projects, see https://www.codenameone.com/blog/automatically-install-update-distribute-cn1libs-extensions.html[this tutorial] which explains the process.
+
+
+== Usage
+
+[source,java]
+----
+private ImageMapContainer createImageMap(NavigateWindowTemplate tpl) {
+	int w = tpl.size.getWidth();
+	int h = tpl.size.getHeight();
+	if (!CN.isDesktop()) {
+		if (CN.isPortrait()) {
+			double availableWidth = cnt.getWidth() - cnt.getStyle().getHorizontalPadding();
+			double factor = (availableWidth)/w;
+			h = (int)Math.round(factor * h);
+			w = (int)Math.round(availableWidth);
+		} else {
+			double availableHeight = cnt.getHeight() - cnt.getStyle().getVerticalPadding();
+			double factor = (availableHeight)/h;
+			w = (int)Math.round(factor * w);
+			h = (int)Math.round(availableHeight);
+		}
+	}
+	ImageMapContainer out = new ImageMapContainer(tpl.img, w, h);
+	for (NavigateWindowLink link : tpl.links) {
+		ImageMapContainer.ClickableAreaType type = ImageMapContainer.ClickableAreaType.Rect;
+		if ("oval".equals(link.shape)) {
+			type = ImageMapContainer.ClickableAreaType.Oval;
+		}
+		ImageMapContainer.ClickableArea area = out.new ClickableArea(type, link.bounds, evt->{
+			NavigationEvent nav = new NavigationEvent(link.href);
+			dispatchEvent(nav);
+		});
+		out.addClickableAreas(area);
+		
+	}
+	return out;
+}
+----
+
+== Credits
+
+. Created by https://sjhannah.com[Steve Hannah]
+
+== Building from Source
+
+[source,bash]
+----
+git clone https://github.com/shannah/CN1ImageMap
+cd CN1ImageMap
+./antw jar
+----
